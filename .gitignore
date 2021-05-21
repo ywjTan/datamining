@@ -1,0 +1,8 @@
+
+.DS_Store
+data/tag.csv
+data/rating.csv
+data/movie.csv
+data/link.csv
+data/genome_tags.csv
+data/genome_scores.csv
