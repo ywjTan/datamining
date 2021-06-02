@@ -1,7 +1,6 @@
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press ⌘F8 to toggle the breakpoint.
+import pandas as pd
 
 
-if __name__ == '__main__':
-    print_hi('PyCharm')
+df = pd.read_csv('./movie_vec.csv')
+r = eval(df['movieVec'][0])
+print('end')
