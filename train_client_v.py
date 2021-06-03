@@ -10,7 +10,7 @@ os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
 
 
 def load_data():
-    df = pd.read_csv('./rating_sampled.csv')
+    df = pd.read_csv('./rating_self.csv')
     movievecs = pd.read_csv('./movie_vec.csv', index_col=[0])
     uservecs = pd.read_csv('./user_vec.csv', index_col=[0])
     train_x = []
@@ -18,20 +18,11 @@ def load_data():
     test_x = []
     test_y = []
     print('processing test data set...')
-    for i in range(10000 - 1000, 10000):
-        usr = df['userId'][i]
-        mv = df['movieId'][i]
-        rate = df['rating'][i]
-        moviev = eval(movievecs['movieVec'][mv])
-        userv = eval(uservecs['userVec'][usr])
-        finalv = np.array(moviev + userv)
-        test_x.append(finalv)
-        test_y.append(rate)
     test_x = np.array(test_x)
     test_y = np.array(test_y)
     test_y = test_y.reshape([test_y.shape[0], 1])
     print('processing train data set...')
-    for i in range(10000-1000):
+    for i in range(df.shape[0]):
         usr = df['userId'][i]
         mv = df['movieId'][i]
         rate = df['rating'][i]
@@ -130,7 +121,7 @@ for round_num in range(communication_rounds):
     start_time = time.time()
     print('local epoch num = ', local_epoch_num)
     best_acc = 0
-    saver.save(sess, './tmp/model.ckpt')  
+    saver.save(sess, './tmp/model.ckpt')
     for i in range(local_epoch_num):
         indices = np.random.choice(data_sets['input_train'].shape[0], train_batch_size)
         input_batch = data_sets['input_train'][indices]
