@@ -27,7 +27,7 @@ PS_PUBLIC_IP = "0.0.0.0:37623"
 
 local_iter_num = 100
 train_batch_size = 32
-learning_rate = 0.001
+learning_rate = 0.000001
 alpha = 0.01
 
 sess = tf.Session()
@@ -58,7 +58,7 @@ else:
 
 communication = Communication(PS_PRIVATE_IP, PS_PUBLIC_IP)
 ps_socket= communication.start_socket_ps()
-
+ps_socket.listen(100)
 hyperparameters = {'local_iter_num': local_iter_num,
                    'train_batch_size': train_batch_size,
                    'learning_rate': learning_rate,
@@ -93,4 +93,4 @@ while True:
         sess.run(update_local_vars_op, feed_dict=feed_dict)
         model_paras = new_model_paras
         saver.save(sess, './tmp/model.ckpt')
-    ps_socket.close()
+    c_1.close()

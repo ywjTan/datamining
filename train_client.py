@@ -64,8 +64,8 @@ def assign_vars(local_vars, placeholders):
 
 np.random.seed(1234)
 tf.set_random_seed(1234)
-PS_PUBLIC_IP = '192.168.42.100:37623'
-PS_PRIVATE_IP = '192.168.42.100:37623'
+PS_PUBLIC_IP = '121.36.227.50:37623'
+PS_PRIVATE_IP = '121.36.227.50:37623'
 
 communication_rounds = 20
 communication = Communication(PS_PRIVATE_IP, PS_PUBLIC_IP)
@@ -138,8 +138,8 @@ for round_num in range(communication_rounds):
         sess.run(train_step, feed_dict={input_placeholder: input_batch,
                                         labels_placeholder: label_batch})
 
-        err = sess.run(abs(net - labels_placeholder), feed_dict={input_placeholder: data_sets['input_batch'],
-                                                                     labels_placeholder: data_sets['label_batch']})
+        err = sess.run(abs(net - labels_placeholder), feed_dict={input_placeholder: input_batch,
+                                                                     labels_placeholder: label_batch})
         err = np.sum(err) / train_batch_size
         print('err is: {}'.format(err))
 
