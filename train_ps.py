@@ -30,28 +30,26 @@ train_batch_size = 32
 learning_rate = 0.001
 alpha = 0.01
 
-
-images_placeholder = tf.placeholder(tf.float32, shape=[None, 256])
-labels_placeholder = tf.placeholder(tf.int64, shape=[None])
+sess = tf.Session()
+input_placeholder = tf.placeholder(tf.float32, shape=[None, 256])
+labels_placeholder = tf.placeholder(tf.float32, shape=[None, 1])
 
 # Define variables
 weightsl1 = tf.Variable(tf.random_normal([256, 512]))
 biasesl1 = tf.Variable(tf.random_normal([512]))
-weightsl2 = tf.Variable(tf.zeros([512, 128]))
-biasesl2 = tf.Variable(tf.zeros([128]))
-weightsl3 = tf.Variable(tf.zeros([128, 1]))
-biasesl3 = tf.Variable(tf.zeros([1]))
+weightsl2 = tf.Variable(tf.random_normal([512, 128]))
+biasesl2 = tf.Variable(tf.random_normal([128]))
+weightsl3 = tf.Variable(tf.random_normal([128, 1]))
+biasesl3 = tf.Variable(tf.random_normal([1]))
 
-# Define net
-net = images_placeholder
+net = input_placeholder
 net = tf.nn.relu(tf.add(tf.matmul(net, weightsl1), biasesl1))
 net = tf.nn.relu(tf.add(tf.matmul(net, weightsl2), biasesl2))
 net = tf.add(tf.matmul(net, weightsl3), biasesl3)
-
 saver = tf.train.Saver()
 if not os.path.exists('./tmp/'):
     os.mkdir('./tmp/')
-sess = tf.Session()
+
 if os.path.exists('./tmp/checkpoint'):
     saver.restore(sess, './tmp/model.ckpt')
 else:

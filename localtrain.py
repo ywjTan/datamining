@@ -1,7 +1,7 @@
 import os
 import numpy as np
 import pandas as pd
-import tensorflow.compat.v1 as tf
+import tensorflow as tf
 os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
 
 
@@ -14,7 +14,7 @@ def load_data():
     test_x = []
     test_y = []
     print('processing test data set...')
-    for i in range(100000 - 1000, 100000):
+    for i in range(200000 - 1000, 200000):
         usr = df['userId'][i]
         mv = df['movieId'][i]
         rate = df['rating'][i]
@@ -27,7 +27,7 @@ def load_data():
     test_y = np.array(test_y)
     test_y = test_y.reshape([test_y.shape[0], 1])
     print('processing train data set...')
-    for i in range(100000-1000):
+    for i in range(200000-1000):
         usr = df['userId'][i]
         mv = df['movieId'][i]
         rate = df['rating'][i]
@@ -86,8 +86,9 @@ for i in range(local_iters_num):
                                     labels_placeholder: label_batch})
     if i % 1000 == 0:
         err = sess.run(abs(net-labels_placeholder), feed_dict={input_placeholder: data_sets['input_test'], labels_placeholder: data_sets['label_test']})
-        err = np.sum(err)/train_batch_size
+        err = np.sum(err)/1000
         print('err is: {}'.format(err))
+        saver.save(sess, './tmp/model.ckpt')
     # if i % 10 == 0:
     #     train_accuracy = sess.run(accuracy, feed_dict={
     #         images_placeholder: input_batch, labels_placeholder: label_batch})
@@ -103,4 +104,4 @@ for i in range(local_iters_num):
     #     with open('result.txt','w') as f:
     #         f.write('Round {}, Test accuracy {:g}\n'.format(round_num + 1, test_accuracy))
     #         f.write('Best accuracy {:g}\n'.format(best_acc))
-    # saver.save(sess, './tmp/model.ckpt')
+
