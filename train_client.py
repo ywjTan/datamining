@@ -89,7 +89,7 @@ data_sets = load_data()
 tf.reset_default_graph()
 sess = tf.Session()
 # Define input placeholders
-images_placeholder = tf.placeholder(tf.float32, shape=[None, 128])
+images_placeholder = tf.placeholder(tf.float32, shape=[None, 256])
 labels_placeholder = tf.placeholder(tf.int64, shape=[None])
 
 # Define variables

@@ -8,3 +8,7 @@ data/genome_tags.csv
 data/genome_scores.csv
 *.csv
 
+tmp/checkpoint
+tmp/model.ckpt.data-00000-of-00001
+tmp/model.ckpt.index
+tmp/model.ckpt.meta
