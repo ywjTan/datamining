@@ -1,6 +1,8 @@
 import pandas as pd
 import numpy as np
 
+
+# 从20M中随机采样
 df = pd.read_csv('./data/rating.csv')
 indices = np.random.choice(df.shape[0], 1000000)
 users = []

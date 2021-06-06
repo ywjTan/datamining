@@ -5,6 +5,7 @@ import tensorflow.compat.v1 as tf
 os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
 
 
+# 分类模型， 没有使用
 def load_data():
     df = pd.read_csv('./rating_sampled.csv')
     movievecs = pd.read_csv('./movie_vec.csv', index_col=[0])

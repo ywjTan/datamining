@@ -1,6 +1,7 @@
 import pandas as pd
 
 
+# 算平均分
 df = pd.read_csv('./data/rating.csv')
 movie_score = {}
 for i in range(df.shape[0]):
