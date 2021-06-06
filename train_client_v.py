@@ -35,7 +35,7 @@ def load_data():
     # train_x = (train_x - np.mean(train_x)) / np.std(train_x)
     train_y = np.array(train_y)
     train_y = train_y.reshape([train_y.shape[0], 1])
-    return {'input_train':train_x, 'label_train':train_y, 'input_test':test_x, 'label_test':test_y}
+    return {'input_train': train_x, 'label_train': train_y, 'input_test': test_x, 'label_test': test_y}
 
 
 def create_placeholders():
