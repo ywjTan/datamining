@@ -1,7 +1,7 @@
 import os
 import numpy as np
 import pandas as pd
-import tensorflow as tf
+import tensorflow.compat.v1 as tf
 os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
 
 
@@ -14,7 +14,7 @@ def load_data():
     test_x = []
     test_y = []
     print('processing test data set...')
-    for i in range(200000 - 1000, 200000):
+    for i in range(500000 - 1000, 500000):
         usr = df['userId'][i]
         mv = df['movieId'][i]
         rate = df['rating'][i]
@@ -27,7 +27,7 @@ def load_data():
     test_y = np.array(test_y)
     test_y = test_y.reshape([test_y.shape[0], 1])
     print('processing train data set...')
-    for i in range(200000-1000):
+    for i in range(500000-1000):
         usr = df['userId'][i]
         mv = df['movieId'][i]
         rate = df['rating'][i]
@@ -44,9 +44,10 @@ def load_data():
 
 
 data_sets = load_data()
-
+if os.path.exists('logs.txt'):
+    os.remove('logs.txt')
 learning_rate = 0.000001
-local_iters_num = 1000000
+local_iters_num = 30000000
 train_batch_size = 64
 
 tf.reset_default_graph()
@@ -76,19 +77,19 @@ print('Begin training')
 init = tf.global_variables_initializer()
 sess.run(init)
 print('local epoch num = ', local_iters_num)
-best_acc = 0
-saver.save(sess, './tmp/model.ckpt')
 for i in range(local_iters_num):
     indices = np.random.choice(data_sets['input_train'].shape[0], train_batch_size)
     input_batch = data_sets['input_train'][indices]
     label_batch = data_sets['label_train'][indices]
     sess.run(train_step, feed_dict={input_placeholder: input_batch,
                                     labels_placeholder: label_batch})
+    best_err = 10
     if i % 1000 == 0:
         err = sess.run(abs(net-labels_placeholder), feed_dict={input_placeholder: data_sets['input_test'], labels_placeholder: data_sets['label_test']})
         err = np.sum(err)/1000
-        print('err is: {}'.format(err))
-        saver.save(sess, './tmp/model.ckpt')
+        print('Iter {},error {}'.format(i, round(err, 3)))
+        with open('logs.txt', 'a') as file:
+            file.write('Iter {},error {}\n'.format(i, round(err, 3)))
     # if i % 10 == 0:
     #     train_accuracy = sess.run(accuracy, feed_dict={
     #         images_placeholder: input_batch, labels_placeholder: label_batch})
@@ -104,4 +105,7 @@ for i in range(local_iters_num):
     #     with open('result.txt','w') as f:
     #         f.write('Round {}, Test accuracy {:g}\n'.format(round_num + 1, test_accuracy))
     #         f.write('Best accuracy {:g}\n'.format(best_acc))
+        if err < best_err:
+            saver.save(sess, './tmp/model.ckpt')
+            best_err = err
 
