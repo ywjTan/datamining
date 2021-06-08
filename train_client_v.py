@@ -55,8 +55,8 @@ def assign_vars(local_vars, placeholders):
 
 np.random.seed(1234)
 tf.set_random_seed(1234)
-PS_PUBLIC_IP = '192.168.42.100:37623'
-PS_PRIVATE_IP = '192.168.42.100:37623'
+PS_PUBLIC_IP = '121.36.227.50:37623'
+PS_PRIVATE_IP = '121.36.227.50:37623'
 
 communication_rounds = 20
 communication = Communication(PS_PRIVATE_IP, PS_PUBLIC_IP)
@@ -120,7 +120,6 @@ for round_num in range(communication_rounds):
     sys.stdout.flush()
     start_time = time.time()
     print('local epoch num = ', local_epoch_num)
-    best_acc = 0
     saver.save(sess, './tmp/model.ckpt')
     for i in range(local_epoch_num):
         indices = np.random.choice(data_sets['input_train'].shape[0], train_batch_size)
@@ -150,8 +149,8 @@ for round_num in range(communication_rounds):
         #         f.write('Round {}, Test accuracy {:g}\n'.format(round_num + 1, test_accuracy))
         #         f.write('Best accuracy {:g}\n'.format(best_acc))
     print('%d round training over' % (round_num + 1))
-    print('time: %d ----> iter: %d ----> best_accuracy: %.4f' %
-          (time.time() - start_time, local_epoch_num, best_acc))
+    print('time: %d ----> iter: %d' %
+          (time.time() - start_time, local_epoch_num))
     print('')
     sys.stdout.flush()
 
